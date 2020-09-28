@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const uri =
   "mongodb+srv://yousuf:oFayB7iuLW6Jn1j3@reactnative.6qrxi.gcp.mongodb.net/reactNative?retryWrites=true&w=majority";
@@ -26,5 +27,37 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+userSchema.pre("save", convertToCrypt);
+userSchema.methods.comparePassword = function (candidatePassword) {
+  const user = this;
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(candidatePassword, user.password, function (err, isMatch) {
+      if (err) {
+        return reject(err);
+      }
+      if (!isMatch) {
+        return reject(err);
+      }
+      resolve(true);
+    });
+  });
+};
+
+function convertToCrypt(next) {
+  const user = this;
+  if (!user.isModified("password")) {
+    return next();
+  }
+
+  bcrypt.hash(user.password, 10, function (err, hash) {
+    if (err) {
+      return next(err);
+    }
+    user.password = hash;
+    // console.log("hashed", user.password);
+    next();
+  });
+}
 
 mongoose.model("User", userSchema);
