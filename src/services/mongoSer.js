@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const uri = "uri from mongo Atlas";
+const uri =
+  "mongodb+srv://yousuf:oFayB7iuLW6Jn1j3@reactnative.6qrxi.gcp.mongodb.net/reactNative?retryWrites=true&w=majority";
 
 //Establishing connection
 mongoose.connect(uri, {
