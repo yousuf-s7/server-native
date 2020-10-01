@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const keys = require("../config/keys");
 
-const uri =
-  "mongodb+srv://yousuf:oFayB7iuLW6Jn1j3@reactnative.6qrxi.gcp.mongodb.net/reactNative?retryWrites=true&w=majority";
+const uri = keys.uri;
 
 //Establishing connection
 mongoose.connect(uri, {
